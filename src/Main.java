@@ -1,24 +1,28 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Main {
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) throws IOException {
 
-
-        String[] document = {"1abc2",
-                            "pqr3stu8vwx",
-                            "a1b2c3d4e5f",
-                            "treb7uchet"
-        };
+        List<String> listOfQuote = readAllLines("input.txt");
 
         boolean prvniCisliceNalezena = true;
         int prvniCislice=0;
         int posledniCislice=0;
         int soucet = 0;
+        System.out.println(listOfQuote.size());
+        System.out.println(listOfQuote.get(0));
 
-        for (int i = 0; i < document.length ; i++) {
+        for (int i = 0; i < listOfQuote.size() ; i++) {
 
-            for (int j = 0; j < document[i].length(); j++) {
+            for (int j = 0; j < listOfQuote.get(i).length(); j++) {
 
-                char charakter  = document[i].charAt(j);
+                char charakter  = listOfQuote.get(i).charAt(j);
                 String charStr = String.valueOf(charakter);
 
                 if (isNumeric(charStr)){
@@ -46,5 +50,14 @@ public class Main {
             return false;
         }
         return true;
+    }
+    public static List<String> readAllLines(String resource)throws IOException {
+        ClassLoader classLoader=Thread.currentThread().getContextClassLoader();
+
+        try(InputStream inputStream=classLoader.getResourceAsStream(resource);
+            BufferedReader reader=new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))){
+
+            return reader.lines().collect(Collectors.toList());
+        }
     }
 }
